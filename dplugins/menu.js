@@ -5,17 +5,18 @@ const { format } = require(__dirname + "/../framework/mesfonctions");
 const os = require("os");
 const moment = require("moment-timezone");
 const s = require(__dirname + "/../set");
-const more = String.fromCharCode(8206)
-const readmore = more.repeat(4001)
+
+const more = String.fromCharCode(8206);
+const readmore = more.repeat(4001);
 
 zokou({ nomCom: "menu", categorie: "General" }, async (dest, zk, commandeOptions) => {
     let { ms, repondre, prefixe, nomAuteurMessage, mybotpic } = commandeOptions;
     let { cm } = require(__dirname + "/../framework/zokou");
 
     let coms = {};
-    let mode = s.MODE.toLowerCase() === "yes" ? "public" : "private";
+    let mode = s.MODE.toLowerCase() === "yes" ? "🟢 Public" : "🔒 Private";
 
-    // Group commands by category
+    // Categorize commands
     cm.map((com) => {
         if (!coms[com.categorie]) coms[com.categorie] = [];
         coms[com.categorie].push(com.nomCom);
@@ -26,37 +27,37 @@ zokou({ nomCom: "menu", categorie: "General" }, async (dest, zk, commandeOptions
     const date = moment().format('DD/MM/YYYY');
 
     let header = `
-╔═━「 *DARK V² WHATSAPP BOT* 」━═╗
-┃
-┃ ◦ *Owner:* ${s.OWNER_NAME}
-┃ ◦ *Mode:* ${mode}
-┃ ◦ *Prefix:* ${s.PREFIXE}
-┃ ◦ *Plugins:* ${cm.length}
-┃ ◦ *Platform:* ${os.platform()}
-┃ ◦ *Time:* ${time}
-┃ ◦ *Date:* ${date}
-┃ ◦ *Channel:* https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26
-┃
-╚════════════════════╝
+╔═══『 𝗗𝗔𝗥𝗞 𝗩² 𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣 𝗕𝗢𝗧 』═══╗
+┃ 
+┃ ⚡ *Owner:* ${s.OWNER_NAME}
+┃ 🔰 *Mode:* ${mode}
+┃ 🔎 *Prefix:* ${s.PREFIXE}
+┃ 🔧 *Plugins:* ${cm.length}
+┃ 🖥️ *Platform:* ${os.platform()}
+┃ ⏰ *Time:* ${time}
+┃ 📆 *Date:* ${date}
+┃ 🔗 *Channel:* wa.me/0029VarDt9t30LKL1SoYXy26
+┃ 
+╚══════════════════════════╝
 
-${readmore}*COMMAND CATEGORIES:*`;
+${readmore}╔═══『 *COMMANDS BY CATEGORY* 』═══╗`;
 
-    let body = ``;
+    let body = "";
 
     for (const cat in coms) {
-        body += `\n\n╭───❖ ${cat.toUpperCase()} ❖───╮`;
+        body += `\n\n╭─▣ *${cat.toUpperCase()}* ▣─╮`;
         for (const cmd of coms[cat]) {
-            body += `\n│ ◦ ${cmd}`;
+            body += `\n│ ✦ ${prefixe}${cmd}`;
         }
-        body += `\n╰───────────────╯`;
+        body += `\n╰──────────────╯`;
     }
 
     let footer = `
-━━━━━━━━━━━━━━━━━━━━━━
-© 2025 DARK TECH BOT`;
+
+╚══════『 © 2025 DARK TECH BOT 』══════╝`;
 
     const caption = header + body + footer;
-    const media = mybotpic(); // Should return image or video URL
+    const media = mybotpic(); // Should return a file path or URL
 
     try {
         if (media.match(/\.(mp4|gif)$/i)) {
@@ -75,6 +76,6 @@ ${readmore}*COMMAND CATEGORIES:*`;
         }
     } catch (e) {
         console.log("Menu error: " + e);
-        repondre("⚠️ Error displaying menu.");
+        repondre("⚠️ Couldn't display menu.");
     }
 });
