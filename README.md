@@ -98,8 +98,8 @@
 - Built with Baileys MD
 
 <p align="center">
-  <a href="https://render.com/deploy?repo=https://github.com/darkdev-tech/DARK-V2.git">
-    <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render"/>
+  <a href="https://replit.com/github/darkdev-tech/DARK-V2" target="_blank">
+    <img src="https://replit.com/badge/github/darkdev-tech/DARK-V2" alt="Run on Replit">
   </a>
 </p>
 
