@@ -59,9 +59,43 @@
 </p>
 
 
-# 3. RENDER DEPLOY
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/darkdev-tech/DARK-V2)
+<h1 align="center">DARK V2 - WhatsApp Bot</h1>
 
+<p align="center">
+  <a href="https://render.com/deploy?repo=https://github.com/darkdev-tech/DARK-V2.git">
+    <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render"/>
+  </a>
+</p>
+
+<p align="center">
+  Deploy DARK V2 to Render with one click!
+</p>
+
+---
+
+## How to Deploy on Render
+
+1. Click the **"Deploy to Render"** button above.
+2. Log into your Render account (or create one).
+3. Render will automatically clone the repo and let you configure environment variables.
+4. Set the required ENV variables like:
+   - `SESSION_ID`
+   - `OWNER_NUMBER`
+   - `MONGO_URL` *(if needed)*
+   - `PORT`
+5. Click **Deploy** and wait for it to build and go live!
+
+> **Need help?** Contact support: `0107065646`
+
+---
+
+## Features
+
+- Stylish Menu with Media & Voice Note
+- Admin & Group Commands
+- JSON-based Settings & XP System
+- Anime, Movie, Search Functions
+- Built with Baileys MD
 
 # 4. DEPLOY ON REPLIT
 
