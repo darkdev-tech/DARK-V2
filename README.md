@@ -53,7 +53,7 @@
 
 <h4 align="left">🚀 DEPLOY TO HEROKU</h4>
 <p align="left">
-  <a href="https://dashboard.heroku.com/new?template=https://github.com/darkdev-tech/JOCKER-xmd" target="_blank">
+  <a href="https://dashboard.heroku.com/new?template=https://github.com/darkdev-tech/DARK-V2" target="_blank">
     <img src="https://img.shields.io/badge/-Deploy%20To%20Heroku-purple?style=for-the-badge&logo=heroku&logoColor=white" alt="Deploy to Heroku"/>
   </a>
 </p>
