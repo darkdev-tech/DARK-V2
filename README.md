@@ -51,9 +51,12 @@
   [![Create a Heroku Account](https://img.shields.io/badge/Create%20Account-Heroku-79589F?logo=heroku&logoColor=white)](https://signup.heroku.com/)
 
 
-# 2. HEROKU DEPLOY 
-    
-  [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/darkdev-tech/DARK-V2)
+<h4 align="left">🚀 DEPLOY TO HEROKU</h4>
+<p align="left">
+  <a href="https://dashboard.heroku.com/new?template=https://github.com/darkdev-tech/JOCKER-xmd" target="_blank">
+    <img src="https://img.shields.io/badge/-Deploy%20To%20Heroku-purple?style=for-the-badge&logo=heroku&logoColor=white" alt="Deploy to Heroku"/>
+  </a>
+</p>
 
 
 # 3. RENDER DEPLOY
