@@ -97,9 +97,11 @@
 - Anime, Movie, Search Functions
 - Built with Baileys MD
 
-# 4. DEPLOY ON REPLIT
-
-[![Run on Replit](https://img.shields.io/badge/Run%20on-Replit-1f1f1f?style=for-the-badge&logo=replit&logoColor=white)](https://replit.com/github/darkdev-tech/DARK-V2)
+<p align="center">
+  <a href="https://render.com/deploy?repo=https://github.com/darkdev-tech/DARK-V2.git">
+    <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render"/>
+  </a>
+</p>
 
 ## 👥 Contributors
 
