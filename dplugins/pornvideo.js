@@ -11,7 +11,7 @@
 // Example implementation of the 'pornvideo' command
 module.exports = {
     name: "pornvideo",
-    category: "nsfw",
+    category: "hentai",
     description: "Fetches a random video from an NSFW source. Use responsibly.",
     usage: "!pornvideo",
     run: async (client, message, args) => {
