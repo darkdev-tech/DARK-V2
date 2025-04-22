@@ -3,7 +3,23 @@ const moment = require("moment-timezone");
 const speed = require("performance-now");
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
+// ==================== 🕶️ Dark MD V2 Theme ====================
+const THEME = {
+  PRIMARY: '🕶️',
+  SECONDARY: '⚡',
+  ERROR: '❌',
+  SUCCESS: '✅',
+  WARNING: '⚠️',
+  INFO: 'ℹ️'
+};
 
+const PING_THRESHOLDS = {
+  EXCELLENT: 100,
+  GOOD: 300,
+  FAIR: 600
+};
+
+// ==================== ⚡ Ping Command ====================
 zokou({
   nomCom: "ping",
   desc: "Check bot response speed",
@@ -12,13 +28,11 @@ zokou({
   fromMe: true
 }, async (dest, zk, { repondre, ms }) => {
     try {
-       
-        let loadingMsg = await zk.sendMessage(dest, { 
-            text: "𝐓𝐞𝐬𝐭𝐢𝐧𝐠 𝐜𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧..."
+        const loadingMsg = await zk.sendMessage(dest, { 
+            text: `${THEME.PRIMARY} *Dark MD V2* is testing connection...`
         }, { quoted: ms });
 
-        // Simulate a single processing step
-        await sleep(500);
+        await sleep(500); // Simulate processing
 
         // Measure ping
         const timestamp = speed();
@@ -26,18 +40,20 @@ zokou({
         const pingResult = (speed() - timestamp).toFixed(2);
 
         // Determine connection quality
-        let quality = "";
-        if (pingResult < 100) quality = "𝐄𝐱𝐜𝐞𝐥𝐥𝐞𝐧𝐭";
-        else if (pingResult < 300) quality = "𝐆𝐨𝐨𝐝";
-        else if (pingResult < 600) quality = "𝐅𝐚𝐢𝐫";
+        let quality;
+        if (pingResult < PING_THRESHOLDS.EXCELLENT) quality = "𝐄𝐱𝐜𝐞𝐥𝐥𝐞𝐧𝐭";
+        else if (pingResult < PING_THRESHOLDS.GOOD) quality = "𝐆𝐨𝐨𝐝";
+        else if (pingResult < PING_THRESHOLDS.FAIR) quality = "𝐅𝐚𝐢𝐫";
         else quality = "𝐒𝐥𝐨𝐰";
 
-       
-        const resultMessage = `𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 𝐓𝐢𝐦𝐞⚡: ${pingResult} 𝐦𝐬\n
+        const resultMessage = `
+${THEME.PRIMARY} *Dark MD V2 Performance*
 
-𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧 𝐐𝐮𝐚𝐥𝐢𝐭𝐲🖥️: ${quality}\n`;
+${THEME.SECONDARY} 𝐑𝐞𝐬𝐩𝐨𝐧𝐬𝐞 𝐓𝐢𝐦𝐞: ${pingResult} ms
+${THEME.SUCCESS} 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧 𝐐𝐮𝐚𝐥𝐢𝐭𝐲: ${quality}
+${getPerformanceBar(pingResult)}
+`;
 
-        // Update the initial message with the result
         await zk.sendMessage(dest, {
             text: resultMessage,
             edit: loadingMsg.key
@@ -45,11 +61,17 @@ zokou({
 
     } catch (error) {
         console.error("Ping error:", error);
-        await repondre("𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐭𝐞𝐬𝐭 𝐜𝐨𝐧𝐧𝐞𝐜𝐭𝐢𝐨𝐧.");
+        await repondre(`${THEME.ERROR} Failed to test connection.`);
     }
 });
 
-// Uptime command with simplified display and fancy font
+function getPerformanceBar(ping) {
+    const maxBars = 10;
+    const filledBars = Math.min(maxBars, Math.floor(maxBars * (1 - ping/1000)));
+    return `📊 ${'█'.repeat(filledBars)}${'░'.repeat(maxBars - filledBars)}`;
+}
+
+// ==================== ⏱️ Uptime Command ====================
 zokou({
   nomCom: "uptime",
   desc: "Check bot runtime",
@@ -57,20 +79,31 @@ zokou({
   reaction: "⏱️",
   fromMe: true
 }, async (dest, zk, { repondre }) => {
-    const formatRuntime = (seconds) => {
-        seconds = Number(seconds);
-        const days = Math.floor(seconds / 86400);
-        const hours = Math.floor(seconds % 86400 / 3600);
-        const minutes = Math.floor(seconds % 3600 / 60);
-        const secs = Math.floor(seconds % 60);
-
-        return `𝐔𝐩𝐭𝐢𝐦𝐞: ${days > 0 ? days + " 𝐝𝐚𝐲" + (days === 1 ? "" : "𝐬") + ", " : ""}${hours > 0 ? hours + " 𝐡𝐨𝐮𝐫" + (hours === 1 ? "" : "𝐬") + ", " : ""}${minutes > 0 ? minutes + " 𝐦𝐢𝐧𝐮𝐭𝐞" + (minutes === 1 ? "" : "𝐬") + ", " : ""}${secs > 0 ? secs + " 𝐬𝐞𝐜𝐨𝐧𝐝" + (secs === 1 ? "" : "𝐬") : ""}`;
-    };
-
-    await repondre(formatRuntime(process.uptime()));
+    try {
+        await repondre(`${THEME.PRIMARY} *Dark MD V2 Uptime*\n\n${formatUptime(process.uptime())}`);
+    } catch (error) {
+        console.error("Uptime error:", error);
+        await repondre(`${THEME.ERROR} Failed to retrieve uptime.`);
+    }
 });
 
-// Screenshot command with minimal changes and fancy font
+function formatUptime(seconds) {
+    seconds = Number(seconds);
+    const days = Math.floor(seconds / 86400);
+    const hours = Math.floor(seconds % 86400 / 3600);
+    const minutes = Math.floor(seconds % 3600 / 60);
+    const secs = Math.floor(seconds % 60);
+
+    const parts = [];
+    if (days > 0) parts.push(`${days}d`);
+    if (hours > 0) parts.push(`${hours}h`);
+    if (minutes > 0) parts.push(`${minutes}m`);
+    parts.push(`${secs}s`);
+
+    return `⏱️ ${parts.join(' : ')}`;
+}
+
+// ==================== 📸 Screenshot Command ====================
 zokou({
   nomCom: "ss",
   desc: "Take website screenshot",
@@ -79,22 +112,23 @@ zokou({
   fromMe: true
 }, async (dest, zk, { ms, arg, repondre }) => {
     if (!arg || arg.length === 0) {
-        return repondre("𝐏𝐥𝐞𝐚𝐬𝐞 𝐩𝐫𝐨𝐯𝐢𝐝𝐞 𝐚 𝐰𝐞𝐛𝐬𝐢𝐭𝐞 𝐔𝐑𝐋.");
+        return repondre(`${THEME.ERROR} Please provide a website URL.\nExample: .ss https://example.com`);
     }
 
     try {
-        const loadingMsg = await repondre("𝐂𝐚𝐩𝐭𝐮𝐫𝐢𝐧𝐠 𝐬𝐜𝐫𝐞𝐞𝐧𝐬𝐡𝐨𝐭...");
+        const loadingMsg = await repondre(`${THEME.PRIMARY} *Dark MD V2* is capturing screenshot...`);
 
-        const url = arg.join(" ");
-        const apiUrl = `https://api.maher-zubair.tech/misc/sstab?url=${encodeURIComponent(url)}&dimension=720x720`;
+        const url = arg.join(" ").trim();
+        if (!isValidUrl(url)) {
+            return repondre(`${THEME.ERROR} Invalid URL format. Include http:// or https://`);
+        }
 
-        await sleep(1500);
-
+        const apiUrl = `https://api.maher-zubair.tech/misc/sstab?url=${encodeURIComponent(url)}&dimension=720x720&darkMode=true`;
         const screenshot = await getBuffer(apiUrl);
 
         await zk.sendMessage(dest, {
             image: screenshot,
-            caption: `𝐒𝐜𝐫𝐞𝐞𝐧𝐬𝐡𝐨𝐭 𝐨𝐟 ${url}`
+            caption: `${THEME.PRIMARY} *Dark MD V2 Screenshot*\n🌐 ${url}`
         }, { quoted: ms });
 
         await zk.sendMessage(dest, {
@@ -103,6 +137,17 @@ zokou({
 
     } catch (error) {
         console.error("Screenshot error:", error);
-        repondre("𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐜𝐚𝐩𝐭𝐮𝐫𝐞 𝐬𝐜𝐫𝐞𝐞𝐧𝐬𝐡𝐨𝐭.");
+        repondre(`${THEME.ERROR} Failed to capture screenshot. Website might be blocking requests.`);
     }
 });
+
+function isValidUrl(url) {
+    try {
+        new URL(url);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+// Note: Ensure getBuffer() is implemented in your code
