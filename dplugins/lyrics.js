@@ -19,49 +19,48 @@ zokou(
     try {
       if (!arg || arg.length === 0) {
         return repondre(
-          `🔍 𝐄𝐱𝐚𝐦𝐩𝐥𝐞: ${prefixe}xlyrics Shape of You\n\n𝐏𝐥𝐞𝐚𝐬𝐞 𝐩𝐫𝐨𝐯𝐢𝐝𝐞 𝐚 𝐬𝐨𝐧𝐠 𝐧𝐚𝐦𝐞 𝐭𝐨 𝐬𝐞𝐚𝐫𝐜𝐡 𝐟𝐨𝐫 𝐥𝐲𝐫𝐢𝐜𝐬!`
+          `🔍 Example: ${prefixe}xlyrics Shape of You\n\nPlease provide a song name to search for lyrics!`
         );
       }
 
       const searchTerm = arg.join(" ");
-      repondre(`🔄 𝐒𝐞𝐚𝐫𝐜𝐡𝐢𝐧𝐠 𝐟𝐨𝐫 𝐥𝐲𝐫𝐢𝐜𝐬 𝐨𝐟 "${searchTerm}"...`);
+      await repondre(`🔄 Searching for lyrics of "${searchTerm}"...`);
 
-      // Fetch lyrics using the provided API
-      const response = await axios.get(`https://api.giftedtech.web.id/api/search/lyrics?apikey=gifted&query=${encodeURIComponent(searchTerm)}`);
-      const result = response.data;
+      // Fetch lyrics using the API
+      const response = await axios.get(`https://api.lyrics.ovh/v1/${encodeURIComponent(searchTerm)}`);
+      const lyrics = response.data.lyrics;
 
-      if (result && result.lyrics) {
+      if (lyrics) {
         // Format response
         const lyricsText = `
 ◈━━━━━━━━━━━━━━━━◈
-  ⚡️ 𝐋𝐲𝐫𝐢𝐜𝐬 𝐒𝐞𝐚𝐫𝐜𝐡 𝐄𝐧𝐠𝐢𝐧𝐞 ⚡️
+  ⚡️ Lyrics Search Engine ⚡️
 
-> 𝐒𝐞𝐚𝐫𝐜𝐡 𝐓𝐞𝐫𝐦: *${searchTerm}*
-> 𝐋𝐲𝐫𝐢𝐜𝐬:
+🎵 Song: *${searchTerm}*
 
-${result.lyrics}
+📜 Lyrics:
+
+${lyrics}
 
 ◈━━━━━━━━━━━━━━━━◈
-𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊-𝐌𝐃
-𝐎𝐰𝐧𝐞𝐫: 𝐃𝐀𝐑𝐊_𝐓𝐄𝐂𝐇
+Powered by DARK-MD
+Owner: DARK_TECH
 `;
 
-        // Send response with bot image
+        // Send response
         await zk.sendMessage(
           dest,
           {
-            image: { url: mybotpic() }, // Use mybotpic() as in your menu.js
-            caption: lyricsText,
+            text: lyricsText,
           },
           { quoted: ms }
         );
       } else {
-        repondre(`❌ 𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐟𝐢𝐧𝐝 𝐥𝐲𝐫𝐢𝐜𝐬.`);
+        repondre(`❌ No lyrics found for "${searchTerm}". Please try another song.`);
       }
-    } catch (e) {
-      repondre(`❌ 𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐟𝐢𝐧𝐝 𝐥𝐲𝐫𝐢𝐜𝐬: ${e.message}`);
+    } catch (error) {
+      console.error("Lyrics error:", error);
+      repondre(`❌ Error fetching lyrics: ${error.message}`);
     }
   }
 );
-
-module.exports = { zokou };
