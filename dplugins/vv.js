@@ -3,107 +3,109 @@ const fs = require('fs');
 
 zokou(
   {
-    nomCom: "vv",
-    categorie: "General",
-    reaction: "🗿",
+    nomCom: ["vv", "viewonce"],
+    categorie: "General",  // Changed to General category
+    reaction: "🔓",
+    description: "Retrieve view-once media (images/videos/audio)"
   },
   async (dest, zk, commandeOptions) => {
-    const { ms, msgRepondu, repondre } = commandeOptions;
+    const { ms, msgRepondu, repondre, arg, prefixe } = commandeOptions;
 
-    try {
-      if (!msgRepondu) {
-        return repondre("𝗛𝗲𝘆, 𝘆𝗼𝘂 𝗻𝗲𝗲𝗱 𝘁𝗼 𝗿𝗲𝗽𝗹𝘆 𝘁𝗼 𝗮 𝘃𝗶𝗲𝘄-𝗼𝗻𝗰𝗲 𝗺𝗲𝗱𝗶𝗮 𝗺𝗲𝘀𝘀𝗮𝗴𝗲 𝗳𝗶𝗿𝘀𝘁! 😅");
-      }
+    // Help menu
+    if (arg.includes('help')) {
+      return repondre(`
+🖤 *DARK MD V2 - VIEWONCE RETRIEVER* 🖤
 
+🔹 *Usage:* 
+   ${prefixe}vv (reply to view-once message)
+   ${prefixe}viewonce (alternative command)
+
+🔹 *Supported Media:*
+   📷 Images  |  🎥 Videos
+   🔉 Audio  |  📁 Documents
+
+🔹 *Notes:*
+   - Works on genuine view-once media
+   - Media auto-deletes after sending
+   - Includes original caption if available
+
+Type ${prefixe}vv to get started!`);
+    }
+
+    if (!msgRepondu) {
+      return repondre("❌ *Please reply to a view-once message!*\nExample: " + prefixe + "vv");
+    }
+
+    // Enhanced media detection
+    const findMedia = (obj) => {
+      if (!obj) return null;
       
-      console.log("DEBUG - Full msgRepondu structure:", JSON.stringify(msgRepondu, null, 2));
+      // Check for view-once flag in common locations
+      const isViewOnce = 
+        obj.viewOnce ||
+        obj.message?.viewOnce ||
+        obj.contextInfo?.viewOnce;
 
-      
-      const findViewOnceMedia = (obj) => {
-        if (!obj || typeof obj !== 'object') return null;
-
-        // Check for mediaa
+      if (isViewOnce) {
         const mediaTypes = [
-          { type: 'image', key: 'imageMessage', altKey: 'image' },
-          { type: 'video', key: 'videoMessage', altKey: 'video' },
-          { type: 'audio', key: 'audioMessage', altKey: 'audio' },
-          { type: 'document', key: 'documentMessage', altKey: 'document' },
+          { type: 'image', keys: ['imageMessage', 'image'] },
+          { type: 'video', keys: ['videoMessage', 'video'] },
+          { type: 'audio', keys: ['audioMessage', 'audio', 'ptt'] },
+          { type: 'document', keys: ['documentMessage', 'document'] }
         ];
 
-        for (const mediaType of mediaTypes) {
-          const mediaObj = obj[mediaType.key] || obj[mediaType.altKey];
-          if (mediaObj) {
-            // Check for viewOnce
-            const isViewOnce = obj.viewOnce === true || 
-                              obj.message?.viewOnce === true || 
-                              (obj.contextInfo && obj.contextInfo.viewOnce === true) ||
-                              (obj.messageContextInfo && obj.messageContextInfo.viewOnce === true) ||
-                             
-                              (obj.messageType && obj.messageType.includes('viewOnce')) ||
-                       
-                              (obj.ephemeralExpiration !== undefined && obj.ephemeralExpiration > 0);
-
-            if (isViewOnce) {
-              return { type: mediaType.type, media: mediaObj };
-            }
+        for (const {type, keys} of mediaTypes) {
+          for (const key of keys) {
+            if (obj[key]) return { type, media: obj[key] };
           }
         }
+      }
 
-     
-        for (const key in obj) {
-          const result = findViewOnceMedia(obj[key]);
+      // Deep search
+      for (const key in obj) {
+        if (typeof obj[key] === 'object') {
+          const result = findMedia(obj[key]);
           if (result) return result;
         }
-        return null;
-      };
-
-     
-      const mediaInfo = findViewOnceMedia(msgRepondu);
-
-      if (!mediaInfo) {
-        // Additional debug
-        console.log("DEBUG - Available keys in msgRepondu:", Object.keys(msgRepondu));
-        if (msgRepondu.message) {
-          console.log("DEBUG - Keys in msgRepondu.message:", Object.keys(msgRepondu.message));
-        }
-        if (msgRepondu.extendedTextMessage?.contextInfo?.quotedMessage) {
-          console.log("DEBUG - Quoted message keys:", Object.keys(msgRepondu.extendedTextMessage.contextInfo.quotedMessage));
-        }
-        return repondre("𝗜 𝗰𝗼𝘂𝗹𝗱𝗻’𝘁 𝗳𝗶𝗻𝗱 𝗮𝗻𝘆 𝘃𝗶𝗲𝘄-𝗼𝗻𝗰𝗲 𝗺𝗲𝗱𝗶𝗮 𝗶𝗻 𝘁𝗵𝗮𝘁 𝗺𝗲𝘀𝘀𝗮𝗴𝗲. 𝗔𝗿𝗲 𝘆𝗼𝘂 𝘀𝘂𝗿𝗲 𝗶𝘁’𝘀 𝘃𝗶𝗲𝘄-𝗼𝗻𝗰𝗲? 🤔");
       }
+      return null;
+    };
 
-      const { type: mediaType, media: mediaObj } = mediaInfo;
+    const mediaData = findMedia(msgRepondu);
 
-      try {
-        // Download the media
-        const mediaPath = await zk.downloadAndSaveMediaMessage(mediaObj);
-        const caption = mediaObj.caption || "𝐑𝐞𝐭𝐫𝐢𝐞𝐯𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊-𝐌𝐃 | 𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊_𝐓𝐄𝐂𝐇";
+    if (!mediaData) {
+      return repondre("🔎 *No view-once media found!*\nEnsure you're replying to:\n- A genuine view-once message\n- Unforwarded media\n- Non-expired content");
+    }
 
-        
-        await zk.sendMessage(
-          dest,
-          {
-            [mediaType]: { url: mediaPath },
-            caption: caption,
-            ...(mediaType === 'audio' ? { mimetype: 'audio/mpeg' } : {}),
-            ...(mediaType === 'document' ? { mimetype: mediaObj.mimetype } : {}),
-          },
-          { quoted: ms }
-        );
+    try {
+      await repondre("⏳ *Processing media...*");
+      
+      const { type, media } = mediaData;
+      const mediaPath = await zk.downloadAndSaveMediaMessage(media);
+      const fileSize = (fs.statSync(mediaPath).size / 1024).toFixed(2) + ' KB';
+      
+      const caption = media.caption 
+        ? `${media.caption}\n\n🔓 *Retrieved by DARK-MD*`
+        : `🔓 *Media Retrieved*\n📦 Size: ${fileSize}\n🕒 ${new Date().toLocaleTimeString()}`;
 
-        
-        fs.unlink(mediaPath, (err) => {
-          if (err) console.error('Cleanup failed:', err);
-        });
+      await zk.sendMessage(
+        dest,
+        {
+          [type]: fs.readFileSync(mediaPath),
+          caption: caption,
+          mimetype: media.mimetype || 
+                   type === 'image' ? 'image/jpeg' :
+                   type === 'video' ? 'video/mp4' :
+                   'audio/mpeg'
+        },
+        { quoted: ms }
+      );
 
-      } catch (downloadError) {
-        console.error("Media download error:", downloadError);
-        return repondre("𝗦𝗼𝗿𝗿𝘆, 𝗜 𝗰𝗼𝘂𝗹𝗱𝗻’𝘁 𝗽𝗿𝗼𝗰𝗲𝘀𝘀 𝘁𝗵𝗮𝘁 𝗺𝗲𝗱𝗶𝗮. 𝗖𝗮𝗻 𝘆𝗼𝘂 𝘁𝗿𝘆 𝗮𝗴𝗮𝗶𝗻? 😓");
-      }
+      fs.unlinkSync(mediaPath); // Cleanup
 
     } catch (error) {
-      console.error("Command error:", error);
-      return repondre("𝗢𝗼𝗽𝘀, 𝘀𝗼𝗺𝗲𝘁𝗵𝗶𝗻𝗴 𝘄𝗲𝗻𝘁 𝘄𝗿𝗼𝗻𝗴: " + error.message);
+      console.error("DARK-MD Error:", error);
+      repondre(`❌ *Failed to retrieve!*\nError: ${error.message}\n\nTry again or contact support`);
     }
   }
 );
