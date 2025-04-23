@@ -37,11 +37,11 @@ zokou({ nomCom: "menu", categorie: "General" }, async (dest, zk, commandeOptions
 ┃ ⌬ *Uptime:* ${format(os.uptime())}
 ┃ ⌬ *Time:* ${time}
 ┃ ⌬ *Date:* ${date}
-┃ ⌬ *Support:* wa.me/${s.OWNER}
+┃ ⌬ *Support:* wa.me/254107065646
 ┃
 ╚════════════════════════════════════════╝
 
-${readmore}╔═════『 *COMMAND CATEGORIES* 』═════╗`;
+${readmore}╔═════『 *𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2 𝐂𝐎𝐌𝐌𝐀𝐍𝐃𝐒* 』═════╗`;
 
     let body = "";
 
