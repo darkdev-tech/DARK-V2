@@ -1,66 +1,47 @@
 const { zokou } = require("../framework/zokou");
-const axios = require("axios"); // Use axios for API requests
+const axios = require("axios");
 
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
-//                   𝐒𝐄𝐀𝐑𝐂𝐇 𝐌𝐎𝐃𝐔𝐋𝐄                 //
-//               𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊-𝐌𝐃                //
-//             𝐎𝐰𝐧𝐞𝐫: 𝐃𝐀𝐑𝐊 𝐓𝐄𝐂𝐇                 //
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+//              XLYRICS BY DARK TECH     //
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
 
-zokou(
-  {
-    nomCom: "xlyrics",
-    categorie: "Search",
-    reaction: "🍁",
-  },
-  async (dest, zk, commandeOptions) => {
-    const { ms, repondre, prefixe, arg } = commandeOptions;
+zokou({
+  nomCom: "xlyrics",
+  categorie: "Search",
+  reaction: "🎶"
+}, async (dest, zk, commandeOptions) => {
+  const { ms, repondre, prefixe, arg } = commandeOptions;
 
-    try {
-      if (!arg || arg.length === 0) {
-        return repondre(
-          `🔍 Example: ${prefixe}xlyrics Shape of You\n\nPlease provide a song name to search for lyrics!`
-        );
-      }
+  if (!arg || arg.length === 0) {
+    return repondre(`❗ *Example:* ${prefixe}xlyrics Shape of You\n\nPlease provide a song name.`);
+  }
 
-      const searchTerm = arg.join(" ");
-      await repondre(`🔄 Searching for lyrics of "${searchTerm}"...`);
+  const song = arg.join(" ");
+  await repondre(`🔍 Searching for *${song}* lyrics...`);
 
-      // Fetch lyrics using the API
-      const response = await axios.get(`https://api.lyrics.ovh/v1/${encodeURIComponent(searchTerm)}`);
-      const lyrics = response.data.lyrics;
+  try {
+    const res = await axios.get(`https://some-random-api.com/lyrics?title=${encodeURIComponent(song)}`);
+    const data = res.data;
 
-      if (lyrics) {
-        // Format response
-        const lyricsText = `
-◈━━━━━━━━━━━━━━━━◈
-  ⚡️ Lyrics Search Engine ⚡️
+    if (!data || !data.lyrics) {
+      return repondre(`❌ No lyrics found for *${song}*.`);
+    }
 
-🎵 Song: *${searchTerm}*
+    const text = `
+╭─❖「 *LYRICS FOUND* 」❖─╮
+│ 🎵 *Title:* ${data.title}
+│ 🎤 *Artist:* ${data.author}
+│ 
+│ ${data.lyrics.substring(0, 4000)}
+╰─────────────────────╯
 
-📜 Lyrics:
-
-${lyrics}
-
-◈━━━━━━━━━━━━━━━━◈
-Powered by DARK-MD
-Owner: DARK_TECH
+⚡ Powered by DARK-MD
 `;
 
-        // Send response
-        await zk.sendMessage(
-          dest,
-          {
-            text: lyricsText,
-          },
-          { quoted: ms }
-        );
-      } else {
-        repondre(`❌ No lyrics found for "${searchTerm}". Please try another song.`);
-      }
-    } catch (error) {
-      console.error("Lyrics error:", error);
-      repondre(`❌ Error fetching lyrics: ${error.message}`);
-    }
+    await zk.sendMessage(dest, { text }, { quoted: ms });
+
+  } catch (e) {
+    console.error("Lyrics Error:", e.message);
+    repondre(`❌ Failed to fetch lyrics.\nMake sure the song name is valid.`);
   }
-);
+});
