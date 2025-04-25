@@ -3,200 +3,152 @@ const { zokou } = require("../framework/zokou");
 const traduire = require("../framework/traduction");
 const { Sticker, StickerTypes } = require('wa-sticker-formatter');
 
+// ╔═══════『 RANDOM ANIME 』═══════╗
 zokou({
   nomCom: "anime",
   categorie: "Fun",
   reaction: "📺"
-},
-async (origineMessage, zk, commandeOptions) => {
-  const { repondre, ms } = commandeOptions;
-
+}, async (origineMessage, zk, { repondre, ms }) => {
   const jsonURL = "https://api.jikan.moe/v4/random/anime";
-
   try {
-    const response = await axios.get(jsonURL);
-    const data = response.data.data;
+    const { data } = await axios.get(jsonURL);
+    const anime = data.data;
 
-    const title = data.title;
-    const synopsis = data.synopsis;
-    const imageUrl = data.images.jpg.image_url;
-    const episodes = data.episodes;
-    const status = data.status;
+    const caption = `╔═════『 *𝗔𝗡𝗜𝗠𝗘 𝗦𝗣𝗢𝗧* 』═════╗
+📺 *Title:* ${anime.title}
+🎬 *Episodes:* ${anime.episodes || "Unknown"}
+📡 *Status:* ${anime.status}
+📝 *Synopsis:* ${anime.synopsis || "No synopsis available."}
+🔗 *More Info:* ${anime.url}
+╚════════════════════╝`;
 
-    const message = `📺 𝗧𝗶𝘁𝗹𝗲: ${title}\n🎬 𝗘𝗽𝗶𝘀𝗼𝗱𝗲𝘀: ${episodes}\n📡 𝗦𝘁𝗮𝘁𝘂𝘀: ${status}\n📝 𝗦𝘆𝗻𝗼𝗽𝘀𝗶𝘀: ${synopsis}\n🔗 𝗨𝗥𝗟: ${data.url}`;
-    
-    zk.sendMessage(origineMessage, { image: { url: imageUrl }, caption: message }, { quoted: ms });
-  } catch (error) {
-    console.error('Error fetching anime data:', error);
-    repondre('Oops, something went wrong while fetching the anime data. Try again later!');
+    zk.sendMessage(origineMessage, {
+      image: { url: anime.images.jpg.image_url },
+      caption,
+    }, { quoted: ms });
+  } catch (err) {
+    console.error(err);
+    repondre("⚠️ Oops! Failed to fetch anime info. Try again later.");
   }
 });
 
+// ╔═══════『 GOOGLE SEARCH 』═══════╗
 zokou({
   nomCom: "google",
   categorie: "Search"
-}, async (dest, zk, commandeOptions) => {
-  const { arg, repondre } = commandeOptions;
-  
-  if (!arg[0] || arg === "") {
-    repondre("Hey, I need a search query to work with! Try something like: .google What is a bot?");
-    return;
-  }
+}, async (dest, zk, { arg, repondre }) => {
+  if (!arg[0]) return repondre("🔍 Provide a search query like: .google What is AI?");
 
   const google = require('google-it');
   try {
     const results = await google({ query: arg.join(" ") });
-    let msg = `𝗚𝗼𝗼𝗴𝗹𝗲 𝗦𝗲𝗮𝗿𝗰𝗵 𝗳𝗼𝗿: ${arg.join(" ")}\n\n`;
+    let msg = `🔍 *Google Results for:* _${arg.join(" ")}_\n\n`;
 
-    for (let result of results) {
-      msg += `➣ 𝗧𝗶𝘁𝗹𝗲: ${result.title}\n`;
-      msg += `➣ 𝗗𝗲𝘀𝗰𝗿𝗶𝗽𝘁𝗶𝗼𝗻: ${result.snippet}\n`;
-      msg += `➣ 𝗟𝗶𝗻𝗸: ${result.link}\n\n────────────────────────\n\n`;
-    }
-    
-    repondre(msg);
-  } catch (error) {
-    repondre("Something broke while searching on Google. Let’s try again later!");
+    results.slice(0, 5).forEach(result => {
+      msg += `➤ *${result.title}*\n${result.snippet}\n🌐 ${result.link}\n\n`;
+    });
+
+    repondre(msg.trim());
+  } catch (err) {
+    repondre("⚠️ Something went wrong while searching Google.");
   }
 });
 
+// ╔═══════『 IMDB SEARCH 』═══════╗
 zokou({
   nomCom: "imdb",
   categorie: "Search"
-}, async (dest, zk, commandeOptions) => {
-  const { arg, repondre, ms } = commandeOptions;
-
-  if (!arg[0] || arg === "") {
-    repondre("I need the name of a movie or series to search for! Like: .imdb The Matrix");
-    return;
-  }
+}, async (dest, zk, { arg, repondre, ms }) => {
+  if (!arg[0]) return repondre("🎬 Please provide a movie name like: .imdb The Matrix");
 
   try {
-    const response = await axios.get(`http://www.omdbapi.com/?apikey=742b2d09&t=${arg}&plot=full`);
-    const imdbData = response.data;
+    const { data } = await axios.get(`http://www.omdbapi.com/?apikey=742b2d09&t=${arg.join(" ")}&plot=full`);
+    if (!data || data.Response === "False") return repondre("❌ Movie not found!");
 
-    let imdbInfo = "⚍⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚍\n";
-    imdbInfo += " ``` 𝗜𝗠𝗗𝗕 𝗦𝗘𝗔𝗥𝗖𝗛 ```\n";
-    imdbInfo += "⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎⚎\n";
-    imdbInfo += "🎬 𝗧𝗶𝘁𝗹𝗲: " + imdbData.Title + "\n";
-    imdbInfo += "📅 𝗬𝗲𝗮𝗿: " + imdbData.Year + "\n";
-    imdbInfo += "⭐ 𝗥𝗮𝘁𝗶𝗻𝗴: " + imdbData.Rated + "\n";
-    imdbInfo += "📆 𝗥𝗲𝗹𝗲𝗮𝘀𝗲𝗱: " + imdbData.Released + "\n";
-    imdbInfo += "⏳ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: " + imdbData.Runtime + "\n";
-    imdbInfo += "🌀 𝗚𝗲𝗻𝗿𝗲: " + imdbData.Genre + "\n";
-    imdbInfo += "👨🏻‍💻 𝗗𝗶𝗿𝗲𝗰𝘁𝗼𝗿: " + imdbData.Director + "\n";
-    imdbInfo += "✍ 𝗪𝗿𝗶𝘁𝗲𝗿𝘀: " + imdbData.Writer + "\n";
-    imdbInfo += "👨 𝗔𝗰𝘁𝗼𝗿𝘀: " + imdbData.Actors + "\n";
-    imdbInfo += "📃 𝗣𝗹𝗼𝘁: " + imdbData.Plot + "\n";
-    imdbInfo += "🌐 𝗟𝗮𝗻𝗴𝘂𝗮𝗴𝗲: " + imdbData.Language + "\n";
-    imdbInfo += "🌍 𝗖𝗼𝘂𝗻𝘁𝗿𝘆: " + imdbData.Country + "\n";
-    imdbInfo += "🎖️ 𝗔𝘄𝗮𝗿𝗱𝘀: " + imdbData.Awards + "\n";
-    imdbInfo += "📦 𝗕𝗼𝘅 𝗢𝗳𝗳𝗶𝗰𝗲: " + imdbData.BoxOffice + "\n";
-    imdbInfo += "🏙️ 𝗣𝗿𝗼𝗱𝘂𝗰𝘁𝗶𝗼𝗻: " + imdbData.Production + "\n";
-    imdbInfo += "🌟 𝗦𝗰𝗼𝗿𝗲: " + imdbData.imdbRating + "\n";
-    imdbInfo += "❎ 𝗜𝗠𝗗𝗕 𝗩𝗼𝘁𝗲𝘀: " + imdbData.imdbVotes + "";
+    const caption = `╔═════『 *IMDB DETAILS* 』═════╗
+🎬 *Title:* ${data.Title}
+📆 *Year:* ${data.Year}
+⭐ *Rated:* ${data.Rated}
+🕒 *Runtime:* ${data.Runtime}
+🌐 *Language:* ${data.Language}
+🌀 *Genre:* ${data.Genre}
+🎥 *Director:* ${data.Director}
+👥 *Actors:* ${data.Actors}
+📝 *Plot:* ${data.Plot}
+🏆 *Awards:* ${data.Awards}
+📦 *Box Office:* ${data.BoxOffice}
+🔗 *IMDB Rating:* ${data.imdbRating} (${data.imdbVotes} votes)
+╚════════════════════╝`;
 
-    zk.sendMessage(dest, {
-      image: {
-        url: imdbData.Poster,
-      },
-      caption: imdbInfo,
-    }, {
-      quoted: ms,
-    });
-  } catch (error) {
-    repondre("Sorry, something went wrong while searching IMDb. Try again later!");
+    zk.sendMessage(dest, { image: { url: data.Poster }, caption }, { quoted: ms });
+  } catch (err) {
+    repondre("⚠️ Error fetching IMDB data.");
   }
 });
 
+// ╔═══════『 MOVIE SEARCH 』═══════╗
 zokou({
   nomCom: "movie",
   categorie: "Search"
-}, async (dest, zk, commandeOptions) => {
-  const { arg, repondre, ms } = commandeOptions;
-
-  if (!arg[0] || arg === "") {
-    repondre("I need the name of a movie or series to search for! Like: .movie The Matrix");
-    return;
-  }
+}, async (dest, zk, { arg, repondre, ms }) => {
+  if (!arg[0]) return repondre("🎥 Please provide a movie/series name like: .movie John Wick");
 
   try {
-    const response = await axios.get(`http://www.omdbapi.com/?apikey=742b2d09&t=${arg}&plot=full`);
-    const imdbData = response.data;
+    const { data } = await axios.get(`http://www.omdbapi.com/?apikey=742b2d09&t=${arg.join(" ")}&plot=full`);
+    if (!data || data.Response === "False") return repondre("❌ Movie not found!");
 
-    let imdbInfo = "Tap the link to join our movie channel on Telegram and download movies: https://t.me/moviebox_free_movie_download\n";
-    imdbInfo += " ``` 𝗗𝗔𝗥𝗞 𝗠𝗗 𝗙𝗶𝗹𝗺𝘀 ```\n";
-    imdbInfo += "𝗠𝗮𝗱𝗲 𝗯𝘆 𝐱𝐡_𝐜𝐥𝐢𝐧𝐭𝐨𝐧\n";
-    imdbInfo += "🎬 𝗧𝗶𝘁𝗹𝗲: " + imdbData.Title + "\n";
-    imdbInfo += "📅 𝗬𝗲𝗮𝗿: " + imdbData.Year + "\n";
-    imdbInfo += "⭐ 𝗥𝗮𝘁𝗶𝗻𝗴: " + imdbData.Rated + "\n";
-    imdbInfo += "📆 𝗥𝗲𝗹𝗲𝗮𝘀𝗲𝗱: " + imdbData.Released + "\n";
-    imdbInfo += "⏳ 𝗥𝘂𝗻𝘁𝗶𝗺𝗲: " + imdbData.Runtime + "\n";
-    imdbInfo += "🌀 𝗚𝗲𝗻𝗿𝗲: " + imdbData.Genre + "\n";
-    imdbInfo += "👨🏻‍💻 𝗗𝗶𝗿𝗲𝗰𝘁𝗼𝗿: " + imdbData.Director + "\n";
-    imdbInfo += "✍ 𝗪𝗿𝗶𝘁𝗲𝗿𝘀: " + imdbData.Writer + "\n";
-    imdbInfo += "👨 𝗔𝗰𝘁𝗼𝗿𝘀: " + imdbData.Actors + "\n";
-    imdbInfo += "📃 𝗣𝗹𝗼𝘁: " + imdbData.Plot + "\n";
-    imdbInfo += "🌐 𝗟𝗮𝗻𝗴𝘂𝗮𝗴𝗲: " + imdbData.Language + "\n";
-    imdbInfo += "🌍 𝗖𝗼𝘂𝗻𝘁𝗿𝘆: " + imdbData.Country + "\n";
-    imdbInfo += "🎖️ 𝗔𝘄𝗮𝗿𝗱𝘀: " + imdbData.Awards + "\n";
-    imdbInfo += "📦 𝗕𝗼𝘅 𝗢𝗳𝗳𝗶𝗰𝗲: " + imdbData.BoxOffice + "\n";
-    imdbInfo += "🏙️ 𝗣𝗿𝗼𝗱𝘂𝗰𝘁𝗶𝗼𝗻: " + imdbData.Production + "\n";
-    imdbInfo += "🌟 𝗦𝗰𝗼𝗿𝗲: " + imdbData.imdbRating + "\n";
-    imdbInfo += "❎ 𝗜𝗠𝗗𝗕 𝗩𝗼𝘁𝗲𝘀: " + imdbData.imdbVotes + "";
+    const caption = `🔗 *Download Movies From Telegram:* https://t.me/moviebox_free_movie_download
 
-    zk.sendMessage(dest, {
-      image: {
-        url: imdbData.Poster,
-      },
-      caption: imdbInfo,
-    }, {
-      quoted: ms,
-    });
-  } catch (error) {
-    repondre("Oops, something went wrong while searching for the movie. Try again later!");
+🎬 *Title:* ${data.Title}
+📅 *Year:* ${data.Year}
+⭐ *Rated:* ${data.Rated}
+📆 *Released:* ${data.Released}
+⏳ *Runtime:* ${data.Runtime}
+🌀 *Genre:* ${data.Genre}
+👨🏻‍💻 *Director:* ${data.Director}
+✍ *Writers:* ${data.Writer}
+👨 *Actors:* ${data.Actors}
+📃 *Plot:* ${data.Plot}
+🌐 *Language:* ${data.Language}
+🌍 *Country:* ${data.Country}
+🎖️ *Awards:* ${data.Awards}
+📦 *Box Office:* ${data.BoxOffice}
+🏙️ *Production:* ${data.Production}
+🌟 *Rating:* ${data.imdbRating}
+❎ *Votes:* ${data.imdbVotes}`;
+
+    zk.sendMessage(dest, { image: { url: data.Poster }, caption }, { quoted: ms });
+  } catch (err) {
+    repondre("⚠️ Error fetching movie details.");
   }
 });
 
+// ╔═══════『 EMOJI MIX 』═══════╗
 zokou({
   nomCom: "emojimix",
   categorie: "Conversion"
-}, async (dest, zk, commandeOptions) => {
-  const { arg, repondre, ms, nomAuteurMessage } = commandeOptions;
+}, async (dest, zk, { arg, repondre, ms, nomAuteurMessage }) => {
+  if (!arg[0] || !arg[0].includes(";")) return repondre("💡 Use it like: .emojimix 😀;🥰");
 
-  if (!arg[0] || arg.length !== 1) {
-    repondre("Hey, that’s not how you use this! Try: .emojimix 😀;🥰");
-    return;
-  }
-
-  const emojis = arg.join(' ').split(';');
-
-  if (emojis.length !== 2) {
-    repondre("You need to give me two emojis with a ';' between them, like: 😀;🥰");
-    return;
-  }
-
-  const emoji1 = emojis[0].trim();
-  const emoji2 = emojis[1].trim();
+  const [emoji1, emoji2] = arg.join(" ").split(";").map(e => e.trim());
 
   try {
-    const response = await axios.get(`https://levanter.onrender.com/emix?q=${emoji1}${emoji2}`);
+    const res = await axios.get(`https://levanter.onrender.com/emix?q=${emoji1}${emoji2}`);
 
-    if (response.data.status === true) {
-      let stickerMess = new Sticker(response.data.result, {
+    if (res.data.status) {
+      const sticker = new Sticker(res.data.result, {
         pack: nomAuteurMessage,
         type: StickerTypes.CROPPED,
-        categories: ["🤩", "🎉"],
-        id: "12345",
         quality: 70,
         background: "transparent",
       });
-      const stickerBuffer2 = await stickerMess.toBuffer();
-      zk.sendMessage(dest, { sticker: stickerBuffer2 }, { quoted: ms });
+
+      const buffer = await sticker.toBuffer();
+      zk.sendMessage(dest, { sticker: buffer }, { quoted: ms });
     } else {
-      repondre("I couldn’t mix those emojis. Maybe try a different pair?");
+      repondre("❌ Couldn’t mix those emojis. Try different ones!");
     }
-  } catch (error) {
-    repondre(`Something went wrong while mixing the emojis: ${error.message}`);
+  } catch (err) {
+    repondre(`⚠️ Error mixing emojis: ${err.message}`);
   }
 });
