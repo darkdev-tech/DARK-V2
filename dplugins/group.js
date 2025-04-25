@@ -147,3 +147,4 @@ caption: *━━━━『 Group Info 』━━━━*\n\n*📛 Name:* ${info.sub
 zk.sendMessage(dest, mess, { quoted: ms });
 });
 
+  
