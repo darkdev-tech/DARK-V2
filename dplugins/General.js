@@ -1,42 +1,42 @@
 const { zokou } = require("../framework/zokou");
-const {getAllSudoNumbers,isSudoTableNotEmpty} = require("../bdd/sudo")
+const { getAllSudoNumbers, isSudoTableNotEmpty } = require("../bdd/sudo");
 const conf = require("../set");
 
 zokou({ nomCom: "owner", categorie: "General", reaction: "❣️" }, async (dest, zk, commandeOptions) => {
-    const { ms , mybotpic, repondre } = commandeOptions;
-    
-    const thsudo = await isSudoTableNotEmpty()
+    const { ms, mybotpic } = commandeOptions;
+    const thsudo = await isSudoTableNotEmpty();
 
     if (thsudo) {
-        let msg = `╔════◇ *𝐃𝐀𝐑𝐊-𝐌𝐃 𝐎𝐖𝐍𝐄𝐑𝐒* ◇════╗\n\n`
-        
-        // Primary owner (must be 254735342808)
-        msg += `*👑 𝐌𝐚𝐢𝐧 𝐎𝐰𝐧𝐞𝐫:*\n• @254107065646\n\n`
-        
-        // Secondary owner (must be 254799283147)
-        msg += `*🌟 𝐒𝐞𝐜𝐨𝐧𝐝𝐚𝐫𝐲 𝐎𝐰𝐧𝐞𝐫:*\n• @254107065646\n\n`
-        
-        // Other sudo users
-        let sudos = await getAllSudoNumbers()
+        let sudos = await getAllSudoNumbers();
+        let msg = `┏━━━━━━━━━━━━━━━┓
+┃  *👑 𝙊𝙒𝙉𝙀𝙍𝙎 𝙊𝙁 𝘿𝘼𝙍𝙆-𝙈𝘿*  
+┗━━━━━━━━━━━━━━━┛
+
+*🌟 Main Owner:*
+• wa.me/254107065646 (@254107065646)
+
+*💫 Secondary Owner:*
+• wa.me/254799283147 (@254799283147)\n\n`;
+
         if (sudos.length > 0) {
-            msg += `───── *𝐎𝐭𝐡𝐞𝐫 𝐒𝐮𝐝𝐨𝐬* ─────\n`
+            msg += `*🔐 Additional Sudo Users:*\n`;
             for (const sudo of sudos) {
-                if (sudo) {
-                    const sudonumero = sudo.replace(/[^0-9]/g, '');
-                    // Skip if it's one of our required numbers
-                    if (!['254107065646', '94799283177'].includes(sudonumero)) {
-                        msg += `• @${sudonumero}\n`;
-                    }
+                const num = sudo.replace(/[^0-9]/g, '');
+                if (!['254107065646', '254799283147'].includes(num)) {
+                    msg += `• wa.me/${num} (@${num})\n`;
                 }
             }
         }
-        msg += `╚════◇ *𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊-𝐌𝐃* ◇════╝`
+
+        msg += `\n┏━━━━━━━━━━━━━━━┓
+┃  *⚙️ 𝙋𝙤𝙬𝙚𝙧𝙚𝙙 𝘽𝙮 𝘿𝘼𝙍𝙆-𝙈𝘿*  
+┗━━━━━━━━━━━━━━━┛`;
 
         const mentionedJid = [
             '254107065646@s.whatsapp.net',
-            '254107065646@s.whatsapp.net',
+            '254799283147@s.whatsapp.net',
             ...sudos.map(num => num.replace(/[^0-9]/g, '') + '@s.whatsapp.net')
-        ].filter(num => !['254107065646', '254107065646'].includes(num.replace(/@s\.whatsapp\.net/, '')))
+        ].filter(num => !['254107065646', '254799283147'].includes(num.replace(/@s\.whatsapp\.net/, '')))
 
         zk.sendMessage(
             dest,
@@ -46,14 +46,14 @@ zokou({ nomCom: "owner", categorie: "General", reaction: "❣️" }, async (dest
                 mentions: mentionedJid
             },
             { quoted: ms }
-        )
+        );
     } else {
-        // VCARD for primary owner
+        // VCARD fallback
         const vcard = 
             'BEGIN:VCARD\n' +
             'VERSION:3.0\n' +
             'FN:' + conf.OWNER_NAME + '\n' +
-            'ORG 𝐃𝐀𝐑𝐊-𝐌𝐃 𝐃𝐞𝐯𝐞𝐥𝐨𝐩𝐦𝐞𝐧𝐭;\n' +
+            'ORG:DARK-MD Development;\n' +
             'TEL;type=CELL;type=VOICE;waid=254107065646:+254107065646\n' +
             'END:VCARD';
 
@@ -61,7 +61,7 @@ zokou({ nomCom: "owner", categorie: "General", reaction: "❣️" }, async (dest
             dest,
             {
                 contacts: {
-                    displayName: "𝐃𝐀𝐑𝐊-𝐌𝐃 𝐎𝐰𝐧𝐞𝐫",
+                    displayName: "DARK-MD Owner",
                     contacts: [{ vcard }],
                 },
             },
@@ -73,69 +73,62 @@ zokou({ nomCom: "owner", categorie: "General", reaction: "❣️" }, async (dest
 zokou({ nomCom: "dev", categorie: "General", reaction: "💘" }, async (dest, zk, commandeOptions) => {
     const { ms, mybotpic } = commandeOptions;
 
-    const devs = [
-        { nom: "𝐃𝐀𝐑𝐊 𝐓𝐄𝐂𝐇", numero: "254107065646" },
-        { nom: "𝐃𝐀𝐑𝐊-𝐌𝐃 𝐃𝐞𝐯", numero: "254107065646" }
-    ];
+    let message = `┏━『 𝙃𝙀𝘼𝘿 𝘿𝙀𝙑𝙀𝙇𝙊𝙋𝙀𝙍𝙎 』━┓
 
-    let message = `╔════◇ *𝐃𝐀𝐑𝐊-𝐌𝐃 𝐃𝐄𝐕𝐄𝐋𝐎𝐏𝐄𝐑𝐒* ◇════╗\n\n`;
-    message += `*🚀 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 𝐨𝐮𝐫 𝐝𝐞𝐯𝐞𝐥𝐨𝐩𝐞𝐫𝐬 𝐟𝐨𝐫 𝐬𝐮𝐩𝐩𝐨𝐫𝐭:*\n\n`;
-    
-    for (const dev of devs) {
-        message += `• *${dev.nom}*: https://wa.me/${dev.numero}\n`;
-    }
-    
-    message += `\n╚════◇ *𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊-𝐌𝐃* ◇════╝`;
+*💻 DARK TECH*
+• https://wa.me/254107065646
+
+*🧠 DARK-MD Dev*
+• https://wa.me/254107065646
+
+┗━━━━━━━━━━━━━━━━━┛
+⚡ *24/7 Bot Support Available*
+🔗 Powered by DARK-MD`;
 
     try {
         const lien = mybotpic();
         if (lien.match(/\.(mp4|gif)$/i)) {
             await zk.sendMessage(
                 dest,
-                { 
-                    video: { url: lien }, 
-                    caption: message 
-                },
+                { video: { url: lien }, caption: message },
                 { quoted: ms }
             );
         } else if (lien.match(/\.(jpeg|png|jpg)$/i)) {
             await zk.sendMessage(
                 dest,
-                { 
-                    image: { url: lien }, 
-                    caption: message 
-                },
+                { image: { url: lien }, caption: message },
                 { quoted: ms }
             );
         } else {
             await repondre(message);
         }
     } catch (e) {
-        console.error("❌ 𝐄𝐫𝐫𝐨𝐫:", e);
-        repondre("❌ 𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐬𝐞𝐧𝐝 𝐝𝐞𝐯 𝐥𝐢𝐬𝐭. 𝐏𝐥𝐞𝐚𝐬𝐞 𝐭𝐫𝐲 𝐚𝐠𝐚𝐢𝐧.");
+        console.error("❌ Error:", e);
+        repondre("❌ Failed to send dev list.");
     }
 });
 
 zokou({ nomCom: "support", categorie: "General", reaction: "🔗" }, async (dest, zk, commandeOptions) => {
-    const { ms, repondre, auteurMessage } = commandeOptions; 
+    const { ms, repondre, auteurMessage } = commandeOptions;
 
     const supportMessage = `
-╔════◇ *𝐃𝐀𝐑𝐊-𝐌𝐃 𝐒𝐔𝐏𝐏𝐎𝐑𝐓* ◇════╗
+╭───────『 📩 𝙎𝙐𝙋𝙋𝙊𝙍𝙏 』───────╮
 
-*🌟 𝐓𝐡𝐚𝐧𝐤 𝐲𝐨𝐮 𝐟𝐨𝐫 𝐜𝐡𝐨𝐨𝐬𝐢𝐧𝐠 𝐃𝐀𝐑𝐊-𝐌𝐃!*
+*🤖 Thank you for using DARK-MD!*
 
-*📢 𝐂𝐡𝐚𝐧𝐧𝐞𝐥:*
-https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26
+Join our updates channel:
+🔗 https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26
 
+💬 Need help? Use *owner* or *dev*
 
-╚════◇ *𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐝𝐚𝐫𝐤_𝐭𝐞𝐜𝐡* ◇════╝
-    `;
+╰────────────────────────╯
+🔧 Powered by @dark_tech`;
 
     await repondre(supportMessage);
     await zk.sendMessage(
         auteurMessage,
         {
-            text: `*📩 𝐒𝐮𝐩𝐩𝐨𝐫𝐭 𝐥𝐢𝐧𝐤𝐬 𝐬𝐞𝐧𝐭 𝐭𝐨 𝐲𝐨𝐮𝐫 𝐃𝐌!*\n\n𝐏𝐥𝐞𝐚𝐬𝐞 𝐣𝐨𝐢𝐧 𝐨𝐮𝐫 𝐜𝐨𝐦𝐦𝐮𝐧𝐢𝐭𝐲 𝐟𝐨𝐫 𝐮𝐩𝐝𝐚𝐭𝐞𝐬 𝐚𝐧𝐝 𝐬𝐮𝐩𝐩𝐨𝐫𝐭.`
+            text: `*📩 Support links sent to your DM!*\n\nJoin our community for updates and help.`
         },
         { quoted: ms }
     );
