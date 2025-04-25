@@ -150,3 +150,63 @@ zokou({ nomCom: "info", categorie: 'Group', reaction: "ℹ️" }, async (dest, z
 
   zk.sendMessage(dest, mess, { quoted: ms });
 });
+
+const { zokou } = require("../framework/zokou");
+
+// ================= ANTI LINK ================= //
+zokou({ nomCom: "antilink", categorie: 'Group', reaction: "🔗" }, async (dest, zk, { ms, repondre, verifGroupe, superUser }) => {
+  if (!verifGroupe) return repondre("⚠️ This command is for groups only.");
+
+  const { message } = ms;
+
+  // Define the list of allowed links (optional)
+  const allowedLinks = [
+    "https://chat.whatsapp.com/",
+    // Add other allowed links here
+  ];
+
+  // Regex pattern to detect any kind of URL
+  const urlPattern = /https?:\/\/[^\s]+/g;
+  const links = message.text?.match(urlPattern);
+
+  if (links && links.length > 0) {
+    for (let link of links) {
+      // Check if the link is not in the allowed list
+      if (!allowedLinks.some(allowedLink => link.startsWith(allowedLink))) {
+        // Remove the message with the link
+        await zk.sendMessage(dest, {
+          delete: { remoteJid: dest, id: message.id }
+        });
+
+        return repondre("❌ Link sharing is not allowed in this group.");
+      }
+    }
+  }
+});
+
+const { zokou } = require("../framework/zokou");
+
+// ================= ANTI BOT ================= //
+zokou({ nomCom: "antibot", categorie: 'Group', reaction: "🚫" }, async (dest, zk, { infosGroupe, repondre, verifGroupe }) => {
+  if (!verifGroupe) return repondre("⚠️ This command is for groups only.");
+
+  const membres = await infosGroupe.participants;
+  
+  for (const membre of membres) {
+    // Check if the member is a bot
+    if (membre.isBot) {
+      // Remove the bot from the group
+      await zk.groupParticipantsUpdate(dest, [membre.id], "remove");
+
+      // Stylish message
+      const botRemovedMessage = `╭─────⚠️ *ANTI-BOT* ⚠️─────\n` +
+                               `│\n` +
+                               `│🚫 *Bot Alert!* 🚫\n` +
+                               `│👤 *Removed User:* @${membre.id.split("@")[0]}\n` +
+                               `│🔒 *Reason:* Bots are not allowed in this group.\n` +
+                               `╰─────────────────────────`;
+
+      zk.sendMessage(dest, { text: botRemovedMessage, mentions: [membre.id] });
+    }
+  }
+});
