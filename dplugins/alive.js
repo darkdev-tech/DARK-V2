@@ -1,78 +1,74 @@
-const { zokou } = require("../framework/zokou");
-const { Sticker, createSticker, StickerTypes } = require("wa-sticker-formatter");
+const { zokou } = require('../framework/zokou');
+const { addOrUpdateDataInAlive, getDataFromAlive } = require('../bdd/alive');
+const moment = require("moment-timezone");
+const s = require(__dirname + "/../set");
 
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
-//                   𝐁𝐎𝐓 𝐒𝐓𝐀𝐓𝐔𝐒                    //
-//               𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊-𝐌𝐃               //
-//             𝐎𝐰𝐧𝐞𝐫: 𝐃𝐀𝐑𝐊 𝐓𝐄𝐂𝐇                 //
-//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━//
+zokou(
+  {
+    nomCom: 'alive',
+    categorie: 'General',
+    reaction: "⚡"
+  },
+  async (dest, zk, { ms, arg, repondre, superUser }) => {
+    const data = await getDataFromAlive();
+    const mode = (s.MODE.toLowerCase() === "yes") ? "🌍 Public" : "🔒 Private";
+    const time = moment().tz('Etc/GMT').format('HH:mm:ss');
+    const date = moment().format('DD/MM/YYYY');
 
-module.exports = {
-   name: "alive",
-   description: "Check if bot is running",
-   alias: ["ping", "status"],
-   category: "General",
-   utilisation: "{prefix}alive",
+    if (!arg || !arg[0]) {
+      if (data) {
+        const { message, lien } = data;
 
-   async execute(client, message, args) {
-      try {
-         // Bot information
-         const botName = "DARK MD V2";
-         const owner = "DARK TECH";
-         const version = "2.0.0";
-         const uptime = process.uptime();
-         const hours = Math.floor(uptime / 3600);
-         const minutes = Math.floor((uptime % 3600) / 60);
-         const seconds = Math.floor(uptime % 60);
-         
-         // Stylish alive message
-         const aliveMessage = `
-╔════════════════════╗
-       *${botName}* 
-╚════════════════════╝
+        const aliveMsg = `
+╭══════⊷ *DARK-MD V2 SYSTEM* ⊶══════╮
+┃ ⚡ *Status:* 𝗔𝗟𝗜𝗩𝗘 & 𝗢𝗡𝗟𝗜𝗡𝗘
+┃ 👑 *Owner:* ${s.OWNER_NAME}
+┃ 🌐 *Mode:* ${mode}
+┃ 📅 *Date:* ${date}
+┃ ⏰ *Time (GMT):* ${time}
+┃────────────────────────────
+┃ ${message || "No custom message set. Use: *alive [msg];[link]*"}
+╰══════════════════════════════╯
+✨ Powered by *DARK TECH*
+        `.trim();
 
-⚡ *Status*: ONLINE
-👑 *Owner*: ${owner}
-🔢 *Version*: ${version}
-⏳ *Uptime*: ${hours}h ${minutes}m ${seconds}s
+        try {
+          if (lien) {
+            if (/\.(mp4|gif)$/i.test(lien)) {
+              await zk.sendMessage(dest, {
+                video: { url: lien },
+                caption: aliveMsg
+              }, { quoted: ms });
+            } else if (/\.(jpeg|jpg|png)$/i.test(lien)) {
+              await zk.sendMessage(dest, {
+                image: { url: lien },
+                caption: aliveMsg
+              }, { quoted: ms });
+            } else {
+              repondre(aliveMsg);
+            }
+          } else {
+            repondre(aliveMsg);
+          }
+        } catch (e) {
+          console.error("Alive send error:", e);
+          repondre("❌ Failed to send alive message. Please check the media link.");
+        }
 
-💻 *Server*: Running smoothly
-📊 *Performance*: Excellent
-
-🔗 *Official Group*: [Coming Soon]
-📌 *Github*: [Private Repository]
-
-💬 *Type* ${client.config.prefix}help *for commands*`;
-
-         // Create a sticker (optional)
-         const sticker = new Sticker("https://example.com/bot-image.png", {
-            pack: botName,
-            author: owner,
-            type: StickerTypes.FULL,
-            categories: ["🤖", "💙"],
-            quality: 100,
-            background: "#000000"
-         });
-
-         // Send response
-         await client.sendMessage(message.from, {
-            text: aliveMessage,
-            mentions: [message.sender]
-         });
-
-         // Send sticker (optional)
-         const stickerBuffer = await sticker.toBuffer();
-         await client.sendMessage(message.from, {
-            sticker: stickerBuffer
-         }, {
-            quoted: message
-         });
-
-      } catch (error) {
-         console.error("Alive command error:", error);
-         await client.sendMessage(message.from, {
-            text: "❌ An error occurred while processing the alive command."
-         });
+      } else {
+        if (!superUser) {
+          return repondre("✅ *DARK-MD V2 is up and running smoothly!*");
+        }
+        return repondre("⚙️ Use *alive [message];[media link]* to set a custom alive message.");
       }
-   }
-};
+    } else {
+      if (!superUser) {
+        return repondre("🚫 *Only the DARK-MD V2 owner can update this!*");
+      }
+
+      const [texte, tlien] = arg.join(' ').split(';');
+      await addOrUpdateDataInAlive(texte, tlien);
+      repondre("✅ *Alive message updated successfully!*");
+    }
+  }
+);
