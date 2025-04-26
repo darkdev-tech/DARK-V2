@@ -42,7 +42,7 @@
 
 # 2. Get session id by Pairing Code
   
-   [![Tap to Pair Session](https://img.shields.io/badge/Tap%20to%20Get%20Session-DARK--V2-blueviolet?style=for-the-badge&logo=whatsapp)](https://dark-pair-code.onrender.com)
+   [![Tap to Pair Session](https://img.shields.io/badge/Tap%20to%20Get%20Session-DARK--V2-blueviolet?style=for-the-badge&logo=whatsapp)](https://darktech-1fcj.onrender.com/pair)
 
 #### DEPLOY TO HEROKU 
 
