@@ -20,7 +20,7 @@ async function events(nomCom) {
         if (setting === 'on' || setting === 'off') {
             try {
                 await attribuerUnevaleur(dest, nomCom, setting);
-                repondre(`${nomCom} 𝐢𝐬 𝐧𝐨𝐰 𝐬𝐞𝐭 𝐭𝐨 ${setting} 𝐛𝐲 𝐔𝐂𝐄𝐘 𝐗𝐃.`);
+                repondre(`${nomCom} 𝐢𝐬 𝐧𝐨𝐰 𝐬𝐞𝐭 𝐭𝐨 ${setting} 𝐛𝐲 𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2.`);
             } catch (error) {
                 console.error(`Error updating ${nomCom}:`, error);
                 repondre(`𝐒𝐨𝐦𝐞𝐭𝐡𝐢𝐧𝐠 𝐰𝐞𝐧𝐭 𝐰𝐫𝐨𝐧𝐠 𝐰𝐡𝐢𝐥𝐞 𝐮𝐩𝐝𝐚𝐭𝐢𝐧𝐠 ${nomCom}.`);
