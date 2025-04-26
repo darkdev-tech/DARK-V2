@@ -24,7 +24,7 @@ const{repondre,ms,dev,superUser}=com;
 
   const {exec}=require("child_process")
 
-    repondre("𝐔𝐂𝐄𝐘 𝐗𝐃 bot Restarting....");
+    repondre("𝐃𝐀𝐑𝐊 𝐌𝐃 bot Restarting....");
 
   exec("pm2 restart all");
   
