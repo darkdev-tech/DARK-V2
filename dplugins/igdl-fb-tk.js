@@ -14,10 +14,10 @@ zokou({nomCom : "instagram" , categorie : "Download"},async (dest , zk , command
     let igvid = await axios('https://api.dreaded.site/api/igdl?url='+link)
 
     if (igvid.data.data.data[0].type == 'video') {
-      zk.sendMessage(dest,{video : {url : igvid.data.data.data[0].url},caption : "𝐈𝐆 𝐕𝐢𝐝𝐞𝐨 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 (𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐔𝐂𝐄𝐘 𝐓𝐄𝐂𝐇)",gifPlayback : false },{quoted : ms}) 
+      zk.sendMessage(dest,{video : {url : igvid.data.data.data[0].url},caption : "𝐈𝐆 𝐕𝐢𝐝𝐞𝐨 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 (𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐋𝐎𝐍𝐋𝐄𝐘)",gifPlayback : false },{quoted : ms}) 
     }
     else {
-      zk.sendMessage(dest,{image : {url : igvid.data.data.data[0].url},caption : "𝐈𝐆 𝐈𝐦𝐚𝐠𝐞 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 (𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊-𝐌𝐃)"})
+      zk.sendMessage(dest,{image : {url : igvid.data.data.data[0].url},caption : "𝐈𝐆 𝐈𝐦𝐚𝐠𝐞 𝐃𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 (𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐋𝐎𝐍𝐋𝐄𝐘)"})
     }
   } catch (e) { repondre("𝐄𝐫𝐫𝐨𝐫 𝐨𝐜𝐜𝐮𝐫𝐫𝐞𝐝 𝐝𝐮𝐫𝐢𝐧𝐠 𝐝𝐨𝐰𝐧𝐥𝐨𝐚𝐝:\n" + e) }
 });
@@ -76,7 +76,7 @@ zokou({ nomCom: "facebook2", categorie: "Download", reaction: "📽️" }, async
     getFBInfo(queryURL).then((result) => {
       let caption = `𝐓𝐢𝐭𝐥𝐞: ${result.title}\n𝐋𝐢𝐧𝐤: ${result.url}`;
       zk.sendMessage(dest, { image: { url: result.thumbnail }, caption: caption }, { quoted: ms });
-      zk.sendMessage(dest, { video: { url: result.sd }, caption: '𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐯𝐢𝐝𝐞𝐨 𝐝𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 (𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐔𝐂𝐄𝐘 𝐗𝐃)' }, { quoted: ms });
+      zk.sendMessage(dest, { video: { url: result.sd }, caption: '𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤 𝐯𝐢𝐝𝐞𝐨 𝐝𝐨𝐰𝐧𝐥𝐨𝐚𝐝𝐞𝐫 (𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐋𝐎𝐍𝐋𝐄𝐘)' }, { quoted: ms });
     }).catch((error) => {
       console.log("Error:", error);
       repondre(error);
