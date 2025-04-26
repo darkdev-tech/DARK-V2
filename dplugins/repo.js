@@ -34,7 +34,7 @@ zokou(
 
     // Prepare the repo message with fancy font and realistic tone
     const infoMsg = `
-     𝐔𝐂𝐄𝐘 𝐗𝐃 𝗥𝗘𝗣𝗢 𝗜𝗡𝗙𝗢 📦
+     𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2 𝗥𝗘𝗣𝗢 𝗜𝗡𝗙𝗢 📦
 
 ◈━━━━━━━━━━━━━━━━◈
 
@@ -49,13 +49,13 @@ https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26
 ${format(os.totalmem() - os.freemem())} / ${format(os.totalmem())}
 
 > ❒ 𝗗𝗘𝗩𝗘𝗟𝗢𝗣𝗘𝗥:  
-𝑼𝑪𝑬𝒀 
+𝐋𝐎𝐍𝐋𝐄𝐘 
 
 ◈━━━━━━━━━━━━━━━━◈
     `;
 
     const menuMsg = `
-     𝐔𝐂𝐄𝐘 𝐗𝐃 𝟮𝟬𝟮𝟱™ 🔥
+     𝐋𝐎𝐍𝐋𝐄𝐘 𝟮𝟬𝟮𝟱™ 🔥
 
 ◈━━━━━━━━━━━━━━━━◈
     `;
@@ -100,7 +100,7 @@ ${format(os.totalmem() - os.freemem())} / ${format(os.totalmem())}
     }
     // Fallback to text-only message if no valid media is provided
     else {
-      repondre(infoMsg + menuMsg + "\nHey there! I’m 𝐔𝐂𝐄𝐘 𝐗𝐃, created by 𝑼𝑪𝑬𝒀TECH 😊");
+      repondre(infoMsg + menuMsg + "\nHey there! I’m 𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2, created by 𝑳𝑶𝑵𝑳𝑬𝒀 😊");
     }
   }
 );
