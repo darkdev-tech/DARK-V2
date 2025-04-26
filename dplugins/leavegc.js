@@ -25,7 +25,7 @@ zokou(
       }
 
       try {
-        repondre(`𝐁𝐲𝐞 𝐞𝐯𝐞𝐫𝐲𝐨𝐧𝐞! 𝐓𝐡𝐞 𝐛𝐨𝐭 𝐰𝐢𝐥𝐥 𝐥𝐞𝐚𝐯𝐞 𝐚𝐥𝐥 𝐠𝐫𝐨𝐮𝐩𝐇...`);
+        repondre(`𝐁𝐲𝐞 𝐞𝐯𝐞𝐫𝐲𝐨𝐧𝐞! 𝐓𝐡𝐞 𝐛𝐨𝐭 𝐰𝐢𝐥𝐥 𝐥𝐞𝐚𝐯𝐞 𝐚𝐥𝐥 𝐠𝐫𝐨𝐮𝐩...`);
 
         // Fetch all group chats (assumed method; adjust if needed)
         const chats = await zk.chats; // Hypothetical; replace with Zokou's method
@@ -36,14 +36,14 @@ zokou(
         for (let i = 0; i < groupChats.length; i++) {
           await zk.sendMessage(
             groupChats[i].id,
-            { text: "𝐁𝐲𝐞 𝐞𝐯𝐞𝐫𝐲𝐨𝐧𝐞! 𝐓𝐡𝐞 𝐛𝐨𝐭 𝐢𝐇 𝐥𝐞𝐚𝐯𝐢𝐧𝐠 𝐭𝐡𝐢𝐇 𝐠𝐫𝐨𝐮𝐩." },
+            { text: "𝐁𝐲𝐞 𝐞𝐯𝐞𝐫𝐲𝐨𝐧𝐞! 𝐓𝐡𝐞 𝐛𝐨𝐭 𝐰𝐢𝐥𝐥 𝐥𝐞𝐚𝐯𝐢𝐧𝐠 𝐭𝐡𝐢𝐬 𝐠𝐫𝐨𝐮𝐩." },
             { quoted: ms }
           );
           await zk.groupLeave(groupChats[i].id);
           await delay(i * 2000); // 2-second delay between leaves
         }
 
-        repondre(`𝐒𝐮𝐜𝐜𝐞𝐇𝐇! 𝐋𝐞𝐟𝐭 𝐚𝐥𝐥 𝐠𝐫𝐨𝐮𝐩𝐇.`);
+        repondre(`𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥! 𝐋𝐞𝐟𝐭 𝐚𝐥𝐥 𝐠𝐫𝐨𝐮𝐩𝐇.`);
       } catch (error) {
         console.error("Error leaving all groups:", error);
         repondre(`𝐄𝐫𝐫𝐨𝐫 𝐥𝐞𝐚𝐯𝐢𝐧𝐠 𝐚𝐥𝐥 𝐠𝐫𝐨𝐮𝐩𝐇: ${error.message}`);
