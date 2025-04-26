@@ -56,12 +56,12 @@ zokou({ nomCom: "dev", categorie: "General", reaction: "💘" }, async (dest, zk
 
     const devs = [
       { nom: "Javiel", numero: "254112167030" },
-      { nom: "᚛𝐔𝐂𝐄𝐘᚜", numero: "263779331359" },
+      { nom: "᚛𝐃𝐚𝐫𝐤᚜", numero: "254107065646" },
       { nom: "Dark", numero: "254107065646" },
       // Ajoute d'autres développeurs ici avec leur nom et numéro
     ];
 
-    let message = "WELCOME TO UCEY XD MD HELP CENTER! ASK FOR HELP FROM ANY OF THE DEVELOPERS BELOW:\n\n";
+    let message = "WELCOME TO DARK MD V2 MD HELP CENTER! ASK FOR HELP FROM ANY OF THE DEVELOPERS BELOW:\n\n";
     for (const dev of devs) {
       message += `----------------\n• ${dev.nom} : https://wa.me/${dev.numero}\n`;
     }
@@ -95,7 +95,7 @@ else {
 zokou({ nomCom: "support", categorie: "General" }, async (dest, zk, commandeOptions) => {
   const { ms, repondre, auteurMessage, } = commandeOptions; 
  
-  repondre("THANK YOU FOR CHOOSING Dark, HERE ARE OUR SUPPORTIVE LINKS\n\n ☉ CHANNEL LINK IS HERE ☉ \n\n❒⁠⁠⁠⁠[https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26] \n\n ☉ GROUP LINK IS HERE ☉\n\n❒⁠⁠⁠⁠[https://chat.whatsapp.com/G2vuCMg8HlpGb5iiTDrrdA] \n\n ☉YOUTUBE LINK IS HERE ☉\n\n❒⁠⁠⁠⁠[https://youtube.com/@javiel_dev?si=4Ts_NqLpmh1de8F2] \n\n\n*Created B𝐘 𝐔𝐂𝐄𝐘") 
-  await zk.sendMessage(auteurMessage,{text : `THANK YOU FOR CHOOSING 𝐔𝐂𝐄𝐘,MAKE SURE YOU FOLLOW THESE LINKS. `},{quoted :ms})
+  repondre("THANK YOU FOR CHOOSING Dark, HERE ARE OUR SUPPORTIVE LINKS\n\n ☉ CHANNEL LINK IS HERE ☉ \n\n❒⁠⁠⁠⁠[https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26] \n\n ☉ GROUP LINK IS HERE ☉\n\n❒⁠⁠⁠⁠[https://chat.whatsapp.com/G2vuCMg8HlpGb5iiTDrrdA] \n\n ☉YOUTUBE LINK IS HERE ☉\n\n❒⁠⁠⁠⁠[https://youtube.com/@javiel_dev?si=4Ts_NqLpmh1de8F2] \n\n\n*Created B𝐘 𝐋𝐎𝐍𝐋𝐄𝐘") 
+  await zk.sendMessage(auteurMessage,{text : `THANK YOU FOR CHOOSING 𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2,MAKE SURE YOU FOLLOW THESE LINKS. `},{quoted :ms})
 
 })
