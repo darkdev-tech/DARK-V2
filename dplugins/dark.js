@@ -15,13 +15,13 @@ zokou(
       const channelLink = 'https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26';
 
       // Prepare the button message content
-      const captionText = `𝐇𝐞𝐫𝐞 𝐚𝐫𝐞 𝐭𝐡𝐞 𝐔𝐂𝐄𝐘 𝐥𝐢𝐧𝐤�{s:\n\n𝐆𝐫𝐨𝐮𝐩: ${groupLink}\n𝐂𝐡𝐚𝐧𝐧𝐞𝐥: ${channelLink}`;
+      const captionText = `𝐇𝐞𝐫𝐞 𝐚𝐫𝐞 𝐭𝐡𝐞 𝐃𝐀𝐑𝐊 𝐥𝐢𝐧𝐤�{s:\n\n𝐆𝐫𝐨𝐮𝐩: ${groupLink}\n𝐂𝐡𝐚𝐧𝐧𝐞𝐥: ${channelLink}`;
 
       // Define the button message
       const buttonMessage = {
         buttonsMessage: {
           contentText: captionText,
-          footerText: "Powered by 𝐔𝐂𝐄𝐘 𝐓𝐄𝐂𝐇",
+          footerText: "Powered by 𝐋𝐎𝐍𝐋𝐄𝐘",
           buttons: [
             {
               buttonId: `${prefix}owner`,
