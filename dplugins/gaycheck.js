@@ -32,7 +32,7 @@ zokou(
       const dey = shibam[Math.floor(Math.random() * shibam.length)];
 
       // Prepare response
-      const gayText = `𝐆𝐚𝐲 𝐂𝐡𝐞𝐜𝐤 𝐎𝐟: @${mentionedUser.split("@")[0]}\n\n𝐑𝐞𝐬𝐮𝐥𝐭: *${dey}%* 🤣\n\n𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐔𝐂𝐄𝐘 𝐗𝐃 \n𝐎𝐰𝐧𝐞𝐫: 𝐔𝐂𝐄𝐘_𝐓𝐄𝐂𝐇`;
+      const gayText = `𝐆𝐚𝐲 𝐂𝐡𝐞𝐜𝐤 𝐎𝐟: @${mentionedUser.split("@")[0]}\n\n𝐑𝐞𝐬𝐮𝐥𝐭: *${dey}%* 🤣\n\n𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊 𝐓𝐄𝐂𝐇 \n𝐎𝐰𝐧𝐞𝐫: 𝐋𝐎𝐍𝐋𝐄𝐘`;
 
       // Send message with image and mentions
       await zk.sendMessage(
