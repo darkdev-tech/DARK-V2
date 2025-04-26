@@ -8,7 +8,7 @@ const s = require(__dirname + "/../set");
 const more = String.fromCharCode(8206)
 const readmore = more.repeat(4001)
 
-zokou({ nomCom: "sc", categorie: "General", reaction: "☣️" }, async (dest, zk, commandeOptions) => {
+zokou({ nomCom: "sc", categorie: "General", reaction: "😇" }, async (dest, zk, commandeOptions) => {
     let { ms, repondre, prefixe, nomAuteurMessage, mybotpic } = commandeOptions;
     let { cm } = require(__dirname + "/../framework//zokou");
     var coms = {};
@@ -29,7 +29,7 @@ zokou({ nomCom: "sc", categorie: "General", reaction: "☣️" }, async (dest, z
     const date = moment().format('DD/MM/YYYY');
 
     let infoMsg = `  
-╔════◇ *𝐔𝐂𝐄𝐘 𝐈𝐍𝐅𝐎* ◇════╗
+╔════◇ *𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2 𝐈𝐍𝐅𝐎* ◇════╗
 *🌐 𝐆𝐢𝐭𝐇𝐮𝐛 𝐋𝐢𝐧𝐤*:
 https://github.com/darkdev-tech/DARK-V2/fork
 
@@ -38,19 +38,19 @@ https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26
 
 ╭───────────────────◇
 │💻 *𝐑𝐀𝐌 𝐔𝐬𝐚𝐠𝐞*: ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
-│👑 *𝐎𝐰𝐧𝐞𝐫 1*: @263779331359
+│👑 *𝐎𝐰𝐧𝐞𝐫 1*: @254107065646
 ╰───────────────────◇
 ╚════◇ *𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐮𝐜𝐞𝐲_𝐭𝐞𝐜𝐡* ◇════╝
     `;
     
     let menuMsg = `
-╔════◇ *𝐔𝐂𝐄𝐘 𝐗𝐃 𝐌𝐄𝐍𝐔* ◇════╗
+╔════◇ *𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2 𝐌𝐄𝐍𝐔* ◇════╗
 `;
 
     var lien = mybotpic();
     const mentionedJid = [
-        '263779331359@s.whatsapp.net', 
-        '263779331359@s.whatsapp.net'
+        '254107065646@s.whatsapp.net', 
+        '254107065646@s.whatsapp.net'
     ];
 
     try {
@@ -60,7 +60,7 @@ https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26
                 { 
                     video: { url: lien },
                     caption: infoMsg + menuMsg,
-                    footer: "*𝐔𝐂𝐄𝐘 𝐗𝐃 - 𝐓𝐡𝐞 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩 𝐁𝐨𝐭*",
+                    footer: "*𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2 - 𝐓𝐡𝐞 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩 𝐁𝐨𝐭*",
                     mentions: mentionedJid,
                     gifPlayback: true 
                 },
@@ -72,7 +72,7 @@ https://whatsapp.com/channel/0029VarDt9t30LKL1SoYXy26
                 { 
                     image: { url: lien },
                     caption: infoMsg + menuMsg,
-                    footer: "*𝐔𝐂𝐄𝐘 𝐗𝐃 - 𝐓𝐡𝐞 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩 𝐁𝐨𝐭*",
+                    footer: "*𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2 - 𝐓𝐡𝐞 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞 𝐖𝐡𝐚𝐭𝐬𝐀𝐩𝐩 𝐁𝐨𝐭*",
                     mentions: mentionedJid
                 },
                 { quoted: ms }
