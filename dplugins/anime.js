@@ -125,7 +125,7 @@ zokou({
     const imdbData = response.data;
 
     let imdbInfo = "Tap the link to join our movie channel on Telegram and download movies: https://t.me/moviebox_free_movie_download\n";
-    imdbInfo += " ``` 𝐔𝐂𝐄𝐘 𝐗𝐃 𝗙𝗶𝗹𝗺𝘀 ```\n";
+    imdbInfo += " ``` 𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2 𝗙𝗶𝗹𝗺𝘀 ```\n";
     imdbInfo += "𝗠𝗮𝗱𝗲 𝗯𝘆 𝐮𝐜𝐞𝐲 𝐭𝐞𝐜𝐡\n";
     imdbInfo += "🎬 𝗧𝗶𝘁𝗹𝗲: " + imdbData.Title + "\n";
     imdbInfo += "📅 𝗬𝗲𝗮𝗿: " + imdbData.Year + "\n";
