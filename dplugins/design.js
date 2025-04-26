@@ -16,7 +16,7 @@ zokou({
   } = _0x5f3b1d;
   try {
     if (!_0x32bdf7 || _0x32bdf7.length === 0) {
-      return _0x36a262("Please describe your image and 𝐔𝐂𝐄𝐘 𝐗𝐃 will generate it.");
+      return _0x36a262("Please describe your image and 𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2 will generate it.");
     }
     const _0x5207e1 = _0x32bdf7.join(" ");
     const _0x31ac22 = "https://www.samirxpikachu.run.place/ArcticFL?prompt=" + _0x5207e1;
@@ -25,7 +25,7 @@ zokou({
     };
     const _0x52094d = {
       image: _0x202b50,
-      caption: "*powered by 𝐮𝐜𝐞𝐲 𝐭𝐞𝐜𝐡*"
+      caption: "*powered by 𝐋𝐎𝐍𝐋𝐄𝐘*"
     };
     const _0x1b777a = {
       quoted: _0x347586
