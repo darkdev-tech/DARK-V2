@@ -26,7 +26,7 @@ zokou({ nomCom: "yts", categorie: "Search", reaction: "✋" }, async (dest, zk, 
     for (let i = 0; i < Math.min(10, resultat.length); i++) {
       captions += `----------------\n𝐓𝐢𝐭𝐥𝐞: ${resultat[i].title}\n𝐓𝐢𝐦𝐞: ${resultat[i].timestamp}\n𝐔𝐫𝐥: ${resultat[i].url}\n`;
     }
-    captions += "\n======\n*𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐔𝐂𝐄𝐘 𝐗𝐃*";
+    captions += "\n======\n*𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2*";
 
     zk.sendMessage(dest, { image: { url: resultat[0].thumbnail }, caption: captions }, { quoted: ms });
   } catch (error) {
