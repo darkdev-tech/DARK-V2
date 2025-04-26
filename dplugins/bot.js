@@ -34,12 +34,12 @@ STATUS
 
 ◈━━━━━━━━━━━━━━━━◈
 │❒⁠⁠⁠⁠ RAM : ${format(os.totalmem() - os.freemem())}/${format(os.totalmem())}
-│❒⁠⁠⁠⁠ DEV : 𝐔𝐂𝐄𝐘 𝐓𝐄𝐂𝐇©
+│❒⁠⁠⁠⁠ DEV : 𝐋𝐎𝐍𝐋𝐄𝐘©
 ⁠⁠⁠⁠◈━━━━━━━━━━━━━━━━◈
   `;
 
     let menuMsg = `
-     𝐔𝐂𝐄𝐘 𝐗𝐃 2025™
+     𝐋𝐎𝐍𝐋𝐄𝐘 2025™
 
 ◈━━━━━━━━━━━━━━━━◈`;
 
@@ -63,7 +63,7 @@ STATUS
           {
             image: { url: lien },
             caption: infoMsg + menuMsg,
-            footer: "𝐔𝐂𝐄𝐘 𝐗𝐃 WhatsApp Bot",
+            footer: "𝐃𝐀𝐑𝐊 𝐌𝐃 𝐕2 WhatsApp Bot",
           },
           { quoted: ms }
         );
@@ -109,7 +109,7 @@ STATUS
               audio: { url: audioPath },
               mimetype: "audio/mpeg", // MP3 files use audio/mpeg
               ptt: true, // Voice note appearance (waveform, duration)
-              fileName: `𝐔𝐂𝐄𝐘 𝐕𝐎𝐈𝐂𝐄 ✧`,
+              fileName: `𝐃𝐀𝐑𝐊 𝐕𝐎𝐈𝐂𝐄 ✧`,
               caption: "✦⋆✗𝐃𝐀𝐑𝐊",
             },
             { quoted: ms }
